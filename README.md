@@ -173,3 +173,17 @@ The backend APIs follow a **RESTful structure** using Next.js API routes.
 | Method | Endpoint | Description |
 |------|------|------|
 | GET | /api/student/notices | Get all notices |
+
+## Login Page
+
+<img width="1347" height="640" alt="image" src="https://github.com/user-attachments/assets/36e1e5ae-7e19-4d5c-b465-c0667effac46" />
+
+Users can log in using their email and password.  
+After login, they are redirected to their role-based dashboard (Admin, Faculty, or Student).
+
+## Register Page 
+
+<img width="1361" height="632" alt="image" src="https://github.com/user-attachments/assets/fc4b4077-1662-4aed-ab32-6cf63ca64d1d" />
+
+Users can create a new account by providing their name, email, password, and role.  
+After registration, they can log in to access their dashboard.
