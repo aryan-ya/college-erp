@@ -1,408 +1,173 @@
-.
-🎓 College ERP System
+# 🎓 College ERP System
 
-A full-stack College ERP (Enterprise Resource Planning) system built to simulate a simplified but practical college management environment.
-The system provides role-based portals for Administrators, Faculty Members, and Students to manage academic activities efficiently.
+A simplified **College ERP (Enterprise Resource Planning) system** built using **Next.js, Prisma, PostgreSQL, and Tailwind CSS**.  
+The application provides **role-based dashboards** for **Admin, Faculty, and Students** to manage academic activities such as departments, assignments, events, and notices.
 
-This project was developed as an end-to-end production-style application including database design, API development, authentication, and deployment.
+---
 
-🚀 Live Demo
+# 🚀 Features
 
-Frontend: https://college-erp-79li.vercel.app/login
+## 🔐 Authentication
+- Secure login system
+- Password hashing using **bcrypt**
+- Role-based access control
+- Protected routes for each user role
 
-GitHub Repository:
-https://github.com/aryan-ya/college-erp
-
-🧑‍💻 Tech Stack
-Frontend
-
-Next.js 14 (App Router)
-
-React
-
-Tailwind CSS
-
-Lucide React Icons
-
-Backend
-
-Next.js API Routes
-
-RESTful API architecture
-
-bcrypt authentication
-
-Database
-
-PostgreSQL
-
-Prisma ORM
-
-Deployment
-
-Vercel (Frontend)
-
-Supabase / Railway / Render (Database & backend services)
-
-🔐 Authentication System
-
-The system implements secure authentication with role-based access control.
-
-Features:
-
-Secure login using email and password
-
-Password hashing using bcrypt
-
-Role-based dashboards
-
-Protected routes to prevent unauthorized access
-
-Session handling using localStorage
-
-User Roles:
-
-Admin
-
-Faculty
-
-Student
-
-👑 Admin Portal
-
-The Administrator has full control over the system.
-
-Admin can manage:
-
-Departments
-
-Create and manage academic departments such as:
-
-Computer Science
-
-Mechanical Engineering
-
-Electronics
-
-Management
-
-Each department contains associated students and faculty members.
-
-Student Management
+## 👑 Admin Portal
+Admin has full control of the system.
 
 Admin can:
+- Create and manage **Departments**
+- Add, edit, delete **Students**
+- Add, edit, delete **Faculty**
+- Create **Events**
+- Publish **Notices**
 
-Create new student records
+## 👨‍🏫 Faculty Portal
+Faculty members can:
 
-Edit student details
+- Upload **lecture materials**
+- Create **assignments**
+- View **student submissions**
+- Post **announcements**
 
-Delete students
-
-View all registered students
-
-Student information includes:
-
-Name
-
-Roll number / Student ID
-
-Email
-
-Phone number
-
-Department
-
-Admission year
-
-Status
-
-Admin can also search students and filter by department or admission year.
-
-Faculty Management
-
-Admin can:
-
-Add new faculty members
-
-Assign faculty to departments
-
-Edit faculty details
-
-Remove faculty when necessary
-
-Faculty information includes:
-
-Name
-
-Email
-
-Department
-
-Designation
-
-👨‍🏫 Faculty Portal
-
-Faculty members access their own faculty dashboard.
-
-They can:
-
-Upload Lecture Materials
-
-Faculty can upload:
-
-PDFs
-
-Presentations
-
-Documents
-
-Each material contains:
-
-Title
-
-Course name
-
-Description
-
-Department / semester
-
-Students belonging to that department can view and download materials.
-
-Assignment Management
-
-Faculty can:
-
-Create assignments
-
-Set assignment deadlines
-
-Upload assignment files
-
-Students can submit assignments by uploading their work.
-
-The system records:
-
-Submission time
-
-Submitted files
-
-Faculty can review submitted assignments.
-
-Announcements
-
-Faculty can publish announcements such as:
-
-Class updates
-
-Schedule changes
-
-Deadline reminders
-
-Exam notifications
-
-These announcements are visible to students of the relevant department.
-
-👨‍🎓 Student Portal
-
-Students have their own dashboard after login.
-
+## 👨‍🎓 Student Portal
 Students can:
 
-View lecture materials uploaded by faculty
+- View **study materials**
+- View and submit **assignments**
+- Register for **events**
+- Read **notices**
 
-View assignments
+---
 
-Submit assignments
+# 🛠 Tech Stack
 
-Read notices and announcements
+### Frontend
+- Next.js 14
+- React
+- Tailwind CSS
+- Lucide Icons
 
-View upcoming deadlines
+### Backend
+- Next.js API Routes
+- REST API structure
+- Prisma ORM
 
-The dashboard shows:
+### Database
+- PostgreSQL
 
-Recent materials
+### Authentication
+- bcrypt password hashing
 
-Upcoming assignments
+---
 
-Important notices
+# 📂 Project Structure
 
-🎉 Event Management System
 
-The ERP includes an Event Management module.
 
-Admin can create events by adding:
+# 🔌 API Structure
 
-Event name
+The backend APIs follow a **RESTful structure** using Next.js API routes.
 
-Description
+## Authentication
 
-Date
+| Method | Endpoint | Description |
+|------|------|------|
+| POST | /api/auth/register | Register new user |
+| POST | /api/auth/login | User login |
 
-Venue
+---
 
-Organizer
+## Admin APIs
 
-Maximum participants
+### Departments
 
-Students can:
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/admin/departments | Get all departments |
+| POST | /api/admin/departments | Create department |
+| PUT | /api/admin/departments/:id | Update department |
+| DELETE | /api/admin/departments/:id | Delete department |
 
-View upcoming events
+### Students
 
-Register for events
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/admin/students | Get all students |
+| POST | /api/admin/students | Create student |
+| PUT | /api/admin/students/:id | Update student |
+| DELETE | /api/admin/students/:id | Delete student |
 
-After registration, the system generates a digital event pass containing:
+### Faculty
 
-Student name
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/admin/faculty | Get all faculty |
+| POST | /api/admin/faculty | Create faculty |
+| PUT | /api/admin/faculty/:id | Update faculty |
+| DELETE | /api/admin/faculty/:id | Delete faculty |
 
-Event name
+### Events
 
-Event date
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/admin/events | Get all events |
+| POST | /api/admin/events | Create event |
+| DELETE | /api/admin/events/:id | Delete event |
 
-Unique identifier
+### Notices
 
-(Optional feature: QR code verification)
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/admin/notices | Get all notices |
+| POST | /api/admin/notices | Create notice |
+| PUT | /api/admin/notices/:id | Update notice |
+| DELETE | /api/admin/notices/:id | Delete notice |
 
-📢 Notice Board
+---
 
-The portal includes a digital notice board.
+## Faculty APIs
 
-Both Admin and Faculty can publish notices.
+### Courses
 
-Each notice contains:
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/faculty/courses | Get faculty courses |
+| POST | /api/faculty/courses | Create course |
+| PUT | /api/faculty/courses/:id | Update course |
+| DELETE | /api/faculty/courses/:id | Delete course |
 
-Title
+### Assignments
 
-Content
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/faculty/assignments | Get assignments |
+| POST | /api/faculty/assignments | Create assignment |
+| PUT | /api/faculty/assignments/:id | Update assignment |
+| DELETE | /api/faculty/assignments/:id | Delete assignment |
 
-Department
+---
 
-Publication date
+## Student APIs
 
-Students can:
+### Assignments
 
-View notices
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/student/assignments | Get student assignments |
+| POST | /api/student/assignments/submit | Submit assignment |
 
-Filter notices by department
+### Events
 
-🔎 Search Functionality
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/student/events | Get all events |
+| POST | /api/student/events/register | Register for event |
+| DELETE | /api/student/events/cancel | Cancel event registration |
 
-The system includes search features for easier navigation.
+### Notices
 
-Examples:
-
-Admin can search students and faculty
-
-Students can search events and lecture materials
-
-🗄 Database Design
-
-The system uses PostgreSQL with Prisma ORM.
-
-Core database entities:
-
-User
-
-Department
-
-Student
-
-Faculty
-
-Course
-
-Assignment
-
-AssignmentSubmission
-
-Event
-
-Notice
-
-Relationships between entities are implemented using foreign keys and relational mapping.
-
-An ER Diagram is included in the repository.
-
-🔌 API Structure
-
-The backend exposes RESTful APIs for core operations.
-
-Authentication APIs
-POST /api/auth/login
-POST /api/auth/register
-Admin APIs
-GET /api/admin/departments
-POST /api/admin/departments
-
-GET /api/admin/students
-POST /api/admin/students
-
-GET /api/admin/faculty
-POST /api/admin/faculty
-Faculty APIs
-GET /api/faculty/courses
-POST /api/faculty/courses
-
-GET /api/faculty/assignments
-POST /api/faculty/assignments
-Student APIs
-GET /api/student/assignments
-GET /api/student/events
-GET /api/student/notices
-
-All APIs follow REST principles with proper error handling.
-
-📂 Project Structure
-college-erp
-│
-├── app
-│   ├── api
-│   ├── admin
-│   ├── faculty
-│   ├── student
-│   └── login
-│
-├── prisma
-│   └── schema.prisma
-│
-├── lib
-│   └── prisma.js
-│
-├── public
-│
-├── .env.local
-├── package.json
-└── README.md
-⚙️ Running the Project Locally
-1 Clone Repository
-git clone https://github.com/yourusername/college-erp.git
-cd college-erp
-2 Install Dependencies
-npm install
-3 Setup Environment Variables
-
-Create .env.local
-
-DATABASE_URL="postgresql://username:password@localhost:5432/college_erp"
-4 Setup Database
-npx prisma db push
-npx prisma generate
-5 Start Development Server
-npm run dev
-
-Open:
-
-http://localhost:3000
-🚀 Deployment
-
-The application is deployed using modern cloud platforms.
-
-Frontend: Vercel
-
-Database: Supabase / Railway
-
-Deployment Steps:
-
-1 Push code to GitHub
-2 Import repository in Vercel
-3 Add environment variables
-4 Deploy application
+| Method | Endpoint | Description |
+|------|------|------|
+| GET | /api/student/notices | Get all notices |
