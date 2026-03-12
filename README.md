@@ -257,3 +257,58 @@ Key features of this page:
 - Some statistics such as **My Courses count** may be static or predefined depending on implementation.
 
 This structure ensures proper **role-based workflow between Admin → Faculty → Student** within the ERP system.
+
+ #@ 🚀 Live Demo
+
+Frontend: https://college-erp-79li.vercel.app/login
+
+GitHub Repository:
+https://github.com/yourusername/college-erp
+
+
+## ⚙️ Run Project Locally
+
+Follow these steps to run the project on your local machine.
+
+### 1️⃣ Clone the Repository
+
+``` bash
+git clone https://github.com/yourusername/college-erp.git
+cd college-erp
+```
+
+### 2️⃣ Install Dependencies
+
+``` bash
+npm install
+```
+
+### 3️⃣ Setup Environment Variables
+
+Create a `.env.local` file in the root folder and add:
+
+``` env
+DATABASE_URL="your_postgresql_database_url"
+```
+
+### 4️⃣ Setup Database
+
+``` bash
+npx prisma db push
+npx prisma generate
+```
+
+### 5️⃣ Run Development Server
+
+``` bash
+npm run dev
+```
+
+Now open your browser and go to:
+
+    http://localhost:3000
+
+The College ERP application will run locally on your system.
+
+
+
