@@ -22,7 +22,6 @@ model Department {
   students Student[]
   faculty  Faculty[]
   courses  Course[]
-  assignments Assignment[]
 }
 
 model Student {
@@ -36,8 +35,7 @@ model Student {
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])
 
-  enrollments Enrollment[]
-
+  enrollments   Enrollment[]
   registrations EventRegistration[]
   submissions   AssignmentSubmission[]
   attendance    Attendance[]
@@ -57,15 +55,15 @@ model Faculty {
 }
 
 model Course {
-  id           Int    @id @default(autoincrement())
-  name         String
-  code         String
+  id   Int    @id @default(autoincrement())
+  name String
+  code String
 
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])
 
   facultyId String
-  faculty   Faculty @relation(fields:[facultyId], references:[id])
+  faculty   Faculty @relation(fields: [facultyId], references: [id])
 
   enrollments Enrollment[]
   assignments Assignment[]
@@ -78,8 +76,8 @@ model Enrollment {
   studentId String
   courseId  Int
 
-  student Student @relation(fields:[studentId], references:[id])
-  course  Course  @relation(fields:[courseId], references:[id])
+  student Student @relation(fields: [studentId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id])
 }
 
 model Event {
@@ -111,13 +109,13 @@ model Notice {
 }
 
 model Assignment {
-  id           Int      @id @default(autoincrement())
-  title        String
-  description  String
-  dueDate      DateTime
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  dueDate     DateTime
 
   courseId Int
-  course   Course @relation(fields:[courseId], references:[id])
+  course   Course @relation(fields: [courseId], references: [id])
 
   submissions AssignmentSubmission[]
 }
@@ -129,18 +127,18 @@ model AssignmentSubmission {
   fileUrl      String
   submittedAt  DateTime @default(now())
 
-  assignment Assignment @relation(fields:[assignmentId], references:[id])
-  student    Student    @relation(fields:[studentId], references:[id])
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  student    Student    @relation(fields: [studentId], references: [id])
 }
 
 model Attendance {
-  id        Int      @id @default(autoincrement())
-  date      DateTime
-  status    String
+  id     Int      @id @default(autoincrement())
+  date   DateTime
+  status String
 
   studentId String
   courseId  Int
 
-  student Student @relation(fields:[studentId], references:[id])
-  course  Course  @relation(fields:[courseId], references:[id])
+  student Student @relation(fields: [studentId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id])
 }
