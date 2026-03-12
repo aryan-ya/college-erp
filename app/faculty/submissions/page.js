@@ -1,67 +1,52 @@
-import { NextResponse } from "next/server"
+"use client"
 
-let submissions = [
+import { useEffect, useState } from "react"
 
-{
-id:1,
-assignmentId:1,
-studentName:"Rahul Kumar",
-rollNo:"CS202401",
-file:"assignment1.pdf",
-submittedAt:new Date(),
-status:"submitted",
-marks:null,
-feedback:null
-},
+export default function FacultySubmissions(){
 
-{
-id:2,
-assignmentId:1,
-studentName:"Priya Singh",
-rollNo:"CS202402",
-file:"assignment1_priya.pdf",
-submittedAt:new Date(),
-status:"submitted",
-marks:null,
-feedback:null
-}
+const [submissions,setSubmissions] = useState([])
 
-]
+useEffect(()=>{
 
-// GET submissions (faculty view)
+fetch("/api/faculty/submissions")
+.then(res=>res.json())
+.then(data=>setSubmissions(data))
 
-export async function GET() {
+},[])
 
-return NextResponse.json(submissions)
+return(
 
-}
+<div className="p-6">
 
-// UPDATE submission (grade / feedback)
+<h1 className="text-2xl font-bold mb-6">
+Assignment Submissions
+</h1>
 
-export async function PUT(request) {
+<div className="space-y-4">
 
-const body = await request.json()
+{submissions.map(sub => (
 
-const submission = submissions.find(
-s => s.id === body.id
+<div key={sub.id} className="border p-4 rounded">
+
+<p className="font-semibold">{sub.studentName}</p>
+<p className="text-sm text-gray-500">{sub.rollNo}</p>
+
+<p className="text-sm mt-2">
+File: {sub.file}
+</p>
+
+<p className="text-sm">
+Status: {sub.status}
+</p>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
 )
-
-if(!submission){
-
-return NextResponse.json(
-{message:"Submission not found"},
-{status:404}
-)
-
-}
-
-submission.marks = body.marks
-submission.feedback = body.feedback
-submission.status = "checked"
-
-return NextResponse.json({
-message:"Submission graded",
-submission
-})
 
 }
