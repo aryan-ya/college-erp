@@ -187,3 +187,73 @@ After login, they are redirected to their role-based dashboard (Admin, Faculty, 
 
 Users can create a new account by providing their name, email, password, and role.  
 After registration, they can log in to access their dashboard.
+
+## Admin Dashboard Page 
+
+<img width="1349" height="656" alt="image" src="https://github.com/user-attachments/assets/558ed402-69de-4f63-b9ab-4e1cedb83bdf" />
+The Admin Dashboard provides complete control over the College ERP system.  
+Administrators can manage all major entities of the system including departments, students, faculty members, events, and notices.
+
+### Features
+
+- **Departments:**  
+  Admin can **add or delete departments** in the college system.
+
+- **Students:**  
+  Admin can **add new students, view student records, and delete students** when required.
+
+- **Faculty:**  
+  Admin can **add faculty members and remove them from the system**.
+
+- **Events:**  
+  Admin can **create events and delete existing events**.
+
+- **Notices:**  
+  Admin can **post notices for students and faculty and remove notices when needed**.
+
+This dashboard acts as the **central management panel** for the entire ERP system.
+## Student Dashboard Page 
+<img width="1365" height="638" alt="image" src="https://github.com/user-attachments/assets/be00b591-19a0-4587-bc46-877fe15c33e6" />
+The Student Dashboard provides an overview of the student's academic activities and information.
+
+### Features
+
+- **Dashboard Data (Dynamic):**  
+  The dashboard displays dynamic data such as assignments, events, and notices fetched from the backend APIs.
+
+- **Courses (Static):**  
+  The courses section currently displays static course information assigned to the student.
+
+- **Assignments:**  
+  Assignments are created by **Faculty** and automatically appear on the **Student Dashboard**.
+
+- **Events:**  
+  Events are created and managed by the **Admin**, and students can view upcoming events from their dashboard.
+
+- **Notices:**  
+  Notices posted by the **Admin** are visible to students through the notice section.
+
+This setup ensures proper workflow between **Admin → Faculty → Student** within the College ERP system.
+
+## Faculty Dashboard Page
+<img width="1357" height="637" alt="image" src="https://github.com/user-attachments/assets/b65bc26d-2b6d-44d1-a77c-20abe81f9b38" />
+
+The Faculty Dashboard allows faculty members to manage academic activities such as courses, assignments, and student interactions.
+
+Key features of this page:
+
+- Faculty can view **courses they teach (My Courses)**.
+- Faculty can **post assignments** which become directly visible on the **student dashboard**.
+- Faculty can **view students enrolled in their courses**.
+- Faculty can **post announcements and notices**.
+- Faculty can **grade assignment submissions**.
+- Faculty can also **take attendance for students**.
+
+### Data Flow in the System
+
+- **Students added by Admin** appear in the **Faculty Dashboard student list**.
+- **Assignments created by Faculty** are automatically visible in the **Student Dashboard**.
+- **Student dashboard data (courses, assignments, attendance)** is fetched dynamically using **API calls**.
+- Some statistics such as **My Courses count** may be static or predefined depending on implementation.
+
+This structure ensures proper **role-based workflow between Admin → Faculty → Student** within the ERP system.
