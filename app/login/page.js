@@ -225,13 +225,13 @@ export default function LoginPage() {
                 <label className="text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => router.push("/forgot-password")}
                   className="text-xs text-purple-600 hover:text-purple-700 hover:underline transition"
                 >
                   Forgot Password?
-                </button>
+                </button> */}
               </div>
               <div className="relative group">
                 <Lock size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
