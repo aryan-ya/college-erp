@@ -1,0 +1,54 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# next.js build
+.next
+out
+build
+
+# production
+dist
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# database
+*.sqlite
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# vscode
+.vscode
+
+# typescript
+*.tsbuildinfo
+
+# coverage
+coverage
+
+# cache
+.cache
+
+# temporary
+tmp
+temp

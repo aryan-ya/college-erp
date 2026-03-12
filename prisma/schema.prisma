@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  role     String
+}
+
+model Department {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  students Student[]
+  faculty  Faculty[]
+  courses  Course[]
+  assignments Assignment[]
+}
+
+model Student {
+  id            String @id @default(uuid())
+  name          String
+  email         String @unique
+  phone         String
+  admissionYear Int
+  status        String
+
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  enrollments Enrollment[]
+
+  registrations EventRegistration[]
+  submissions   AssignmentSubmission[]
+  attendance    Attendance[]
+}
+
+model Faculty {
+  id          String @id @default(uuid())
+  name        String
+  email       String @unique
+  phone       String
+  designation String
+
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  courses Course[]
+}
+
+model Course {
+  id           Int    @id @default(autoincrement())
+  name         String
+  code         String
+
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  facultyId String
+  faculty   Faculty @relation(fields:[facultyId], references:[id])
+
+  enrollments Enrollment[]
+  assignments Assignment[]
+  attendance  Attendance[]
+}
+
+model Enrollment {
+  id Int @id @default(autoincrement())
+
+  studentId String
+  courseId  Int
+
+  student Student @relation(fields:[studentId], references:[id])
+  course  Course  @relation(fields:[courseId], references:[id])
+}
+
+model Event {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  date            DateTime
+  venue           String
+  maxParticipants Int
+
+  registrations EventRegistration[]
+}
+
+model EventRegistration {
+  id String @id @default(uuid())
+
+  studentId String
+  eventId   String
+
+  student Student @relation(fields: [studentId], references: [id])
+  event   Event   @relation(fields: [eventId], references: [id])
+}
+
+model Notice {
+  id      String   @id @default(uuid())
+  title   String
+  content String
+  date    DateTime @default(now())
+}
+
+model Assignment {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  dueDate      DateTime
+
+  courseId Int
+  course   Course @relation(fields:[courseId], references:[id])
+
+  submissions AssignmentSubmission[]
+}
+
+model AssignmentSubmission {
+  id           Int      @id @default(autoincrement())
+  assignmentId Int
+  studentId    String
+  fileUrl      String
+  submittedAt  DateTime @default(now())
+
+  assignment Assignment @relation(fields:[assignmentId], references:[id])
+  student    Student    @relation(fields:[studentId], references:[id])
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  status    String
+
+  studentId String
+  courseId  Int
+
+  student Student @relation(fields:[studentId], references:[id])
+  course  Course  @relation(fields:[courseId], references:[id])
+}
