@@ -21,9 +21,8 @@ import {
   ArrowLeft
 } from "lucide-react"
 
-export default function AuthPage() {
+export default function RegisterPage() {
   const router = useRouter()
-  const [isLogin, setIsLogin] = useState(true)
   
   // Form states
   const [name, setName] = useState("")
@@ -35,33 +34,21 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
   const [success, setSuccess] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    // Check for saved email
-    const savedEmail = localStorage.getItem("rememberedEmail")
-    if (savedEmail && isLogin) {
-      setEmail(savedEmail)
-      setRememberMe(true)
-    }
-  }, [isLogin])
+  }, [])
 
   const handleSubmit = async () => {
     // Validation
-    if (!email || !password) {
-      setError("Please fill in all required fields")
+    if (!name || !email || !password) {
+      setError("Please fill in all fields")
       return
     }
 
-    if (!isLogin && !name) {
-      setError("Please enter your name")
-      return
-    }
-
-    if (!isLogin && password.length < 6) {
+    if (password.length < 6) {
       setError("Password must be at least 6 characters")
       return
     }
@@ -69,55 +56,28 @@ export default function AuthPage() {
     setLoading(true)
     setError("")
 
-    const url = isLogin ? "/api/auth/login" : "/api/auth/register"
-    const body = isLogin
-      ? { email, password }
-      : { name, email, password, role }
-
     try {
-      const res = await fetch(url, {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ name, email, password, role })
       })
 
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Something went wrong")
+        setError(data.error || "Registration failed")
         setLoading(false)
         return
       }
 
-      if (isLogin) {
-        // Handle remember me
-        if (rememberMe) {
-          localStorage.setItem("rememberedEmail", email)
-        } else {
-          localStorage.removeItem("rememberedEmail")
-        }
-
-        localStorage.setItem("role", data.role)
-        localStorage.setItem("user", JSON.stringify(data.user))
-
-        // Show success and redirect
-        setSuccess(true)
-        setTimeout(() => {
-          router.push(`/${data.role}/dashboard`)
-        }, 1000)
-      } else {
-        // Registration success
-        setSuccess(true)
-        setTimeout(() => {
-          setIsLogin(true)
-          setSuccess(false)
-          setName("")
-          setPassword("")
-          setRole("student")
-        }, 1500)
-      }
+      // Registration success
+      setSuccess(true)
+      setTimeout(() => {
+        router.push("/login") // Redirect to login page after registration
+      }, 1500)
 
     } catch (err) {
       console.error(err)
@@ -133,14 +93,8 @@ export default function AuthPage() {
     }
   }
 
-  const toggleMode = () => {
-    setIsLogin(!isLogin)
-    setError("")
-    setSuccess(false)
-    setName("")
-    setEmail("")
-    setPassword("")
-    setRole("student")
+  const goToLogin = () => {
+    router.push("/login")
   }
 
   if (!mounted) return null
@@ -153,12 +107,10 @@ export default function AuthPage() {
             <CheckCircle size={40} className="text-green-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {isLogin ? "Login Successful!" : "Registration Successful!"}
+            Registration Successful!
           </h2>
           <p className="text-gray-600 mb-6">
-            {isLogin 
-              ? "Redirecting to your dashboard..." 
-              : "Your account has been created. Redirecting to login..."}
+            Your account has been created. Redirecting to login...
           </p>
           <div className="flex justify-center">
             <Loader2 size={24} className="animate-spin text-blue-600" />
@@ -188,11 +140,9 @@ export default function AuthPage() {
 
         <div className="relative z-10 space-y-8">
           <h1 className="text-white text-5xl font-bold leading-tight">
-            {isLogin ? "Welcome Back!" : "Join Our Community"}
+            Join Our Community
             <span className="block text-blue-200 text-2xl mt-2 font-normal">
-              {isLogin 
-                ? "Sign in to continue your journey" 
-                : "Create your account and get started"}
+              Create your account and get started
             </span>
           </h1>
           
@@ -246,7 +196,7 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* Right Side - Auth Form */}
+      {/* Right Side - Registration Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6">
         <div className="w-full max-w-md">
           
@@ -257,24 +207,20 @@ export default function AuthPage() {
               <span className="text-sm font-medium">Welcome to CollegeERP</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              {isLogin ? "Welcome Back" : "Create Account"}
+              Create Account
             </h1>
             <p className="text-gray-500">
-              {isLogin 
-                ? "Sign in to continue to your dashboard" 
-                : "Fill in your details to get started"}
+              Fill in your details to get started
             </p>
           </div>
 
           {/* Desktop Header */}
           <div className="hidden lg:block text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              {isLogin ? "Welcome Back" : "Create Account"}
+              Create Account
             </h2>
             <p className="text-gray-500">
-              {isLogin 
-                ? "Please sign in to continue" 
-                : "Fill in your information below"}
+              Fill in your information below
             </p>
           </div>
 
@@ -288,25 +234,23 @@ export default function AuthPage() {
 
           {/* Form */}
           <div className="space-y-4">
-            {/* Name Field - Register Only */}
-            {!isLogin && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 block">
-                  Full Name
-                </label>
-                <div className="relative group">
-                  <User size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Enter your full name"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-50/50 focus:bg-white"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                  />
-                </div>
+            {/* Name Field */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 block">
+                Full Name
+              </label>
+              <div className="relative group">
+                <User size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Enter your full name"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-50/50 focus:bg-white"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
               </div>
-            )}
+            </div>
 
             {/* Email Field */}
             <div className="space-y-2">
@@ -328,25 +272,14 @@ export default function AuthPage() {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                {isLogin && (
-                  <button
-                    type="button"
-                    onClick={() => router.push("/forgot-password")}
-                    className="text-xs text-purple-600 hover:text-purple-700 hover:underline transition"
-                  >
-                    Forgot Password?
-                  </button>
-                )}
-              </div>
+              <label className="text-sm font-medium text-gray-700">
+                Password
+              </label>
               <div className="relative group">
                 <Lock size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder={isLogin ? "Enter your password" : "Create a password"}
+                  placeholder="Create a password"
                   className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-gray-50/50 focus:bg-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -360,82 +293,64 @@ export default function AuthPage() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {!isLogin && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Must be at least 6 characters
-                </p>
-              )}
+              <p className="text-xs text-gray-500 mt-1">
+                Must be at least 6 characters
+              </p>
             </div>
 
-            {/* Role Selection - Register Only */}
-            {!isLogin && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 block">
-                  I am a
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {["student", "faculty", "admin"].map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setRole(r)}
-                      className={`p-3 rounded-xl border-2 transition-all ${
+            {/* Role Selection */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 block">
+                I am a
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {["student", "faculty", "admin"].map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setRole(r)}
+                    className={`p-3 rounded-xl border-2 transition-all ${
+                      role === r
+                        ? r === "student"
+                          ? "border-blue-600 bg-blue-50"
+                          : r === "faculty"
+                          ? "border-purple-600 bg-purple-50"
+                          : "border-blue-600 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300 bg-gray-50"
+                    }`}
+                  >
+                    <div className="flex flex-col items-center">
+                      {r === "student" ? (
+                        <GraduationCap size={20} className={role === r ? "text-blue-600" : "text-gray-400"} />
+                      ) : r === "faculty" ? (
+                        <User size={20} className={role === r ? "text-purple-600" : "text-gray-400"} />
+                      ) : (
+                        <Building size={20} className={role === r ? "text-blue-600" : "text-gray-400"} />
+                      )}
+                      <span className={`text-xs mt-1 font-medium capitalize ${
                         role === r
                           ? r === "student"
-                            ? "border-blue-600 bg-blue-50"
+                            ? "text-blue-600"
                             : r === "faculty"
-                            ? "border-purple-600 bg-purple-50"
-                            : "border-blue-600 bg-blue-50"
-                          : "border-gray-200 hover:border-gray-300 bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex flex-col items-center">
-                        {r === "student" ? (
-                          <GraduationCap size={20} className={role === r ? "text-blue-600" : "text-gray-400"} />
-                        ) : r === "faculty" ? (
-                          <User size={20} className={role === r ? "text-purple-600" : "text-gray-400"} />
-                        ) : (
-                          <Building size={20} className={role === r ? "text-blue-600" : "text-gray-400"} />
-                        )}
-                        <span className={`text-xs mt-1 font-medium capitalize ${
-                          role === r
-                            ? r === "student"
-                              ? "text-blue-600"
-                              : r === "faculty"
-                              ? "text-purple-600"
-                              : "text-blue-600"
-                            : "text-gray-500"
-                        }`}>
-                          {r}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                            ? "text-purple-600"
+                            : "text-blue-600"
+                          : "text-gray-500"
+                      }`}>
+                        {r}
+                      </span>
+                    </div>
+                  </button>
+                ))}
               </div>
-            )}
+            </div>
 
-            {/* Remember Me - Login Only */}
-            {isLogin && (
-              <div className="flex items-center justify-between">
-                <label className="flex items-center cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 transition"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                  />
-                  <span className="ml-2 text-sm text-gray-600 group-hover:text-gray-800 transition">
-                    Remember me
-                  </span>
-                </label>
-
-                <div className="flex items-center text-xs text-gray-400">
-                  <Shield size={12} className="mr-1" />
-                  Secure Login
-                </div>
+            {/* Security Badge */}
+            <div className="flex items-center justify-end">
+              <div className="flex items-center text-xs text-gray-400">
+                <Shield size={12} className="mr-1" />
+                Secure Registration
               </div>
-            )}
+            </div>
 
             {/* Submit Button */}
             <button
@@ -446,69 +361,28 @@ export default function AuthPage() {
               {loading ? (
                 <>
                   <Loader2 size={18} className="animate-spin mr-2" />
-                  {isLogin ? "Signing in..." : "Creating account..."}
+                  Creating account...
                 </>
               ) : (
                 <>
-                  {isLogin ? "Sign In" : "Create Account"}
+                  Create Account
                   <ChevronRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
 
-            {/* Toggle between Login/Register */}
+            {/* Link to Login */}
             <p className="text-sm text-gray-600 text-center mt-6">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              Already have an account?
               <button
-                onClick={toggleMode}
+                onClick={goToLogin}
                 className="text-purple-600 font-semibold hover:text-purple-700 hover:underline transition ml-2 inline-flex items-center group"
               >
-                {isLogin ? "Register" : "Login"}
+                Login
                 <ArrowLeft size={14} className="ml-1 group-hover:-translate-x-1 transition-transform" />
               </button>
             </p>
           </div>
-
-          {/* Demo Credentials - Login Only */}
-          {isLogin && (
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <p className="text-xs text-center text-gray-400 mb-3">
-                Demo Credentials (Click to fill)
-              </p>
-              <div className="grid grid-cols-3 gap-2 text-center text-xs">
-                <button
-                  onClick={() => {
-                    setEmail("admin@college.edu")
-                    setPassword("admin123")
-                  }}
-                  className="p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group"
-                >
-                  <p className="font-semibold text-blue-600 mb-1">Admin</p>
-                  <p className="text-gray-500 truncate text-[10px]">admin@college.edu</p>
-                </button>
-                <button
-                  onClick={() => {
-                    setEmail("faculty@college.edu")
-                    setPassword("faculty123")
-                  }}
-                  className="p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors group"
-                >
-                  <p className="font-semibold text-purple-600 mb-1">Faculty</p>
-                  <p className="text-gray-500 truncate text-[10px]">faculty@college.edu</p>
-                </button>
-                <button
-                  onClick={() => {
-                    setEmail("student@college.edu")
-                    setPassword("student123")
-                  }}
-                  className="p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group"
-                >
-                  <p className="font-semibold text-blue-600 mb-1">Student</p>
-                  <p className="text-gray-500 truncate text-[10px]">student@college.edu</p>
-                </button>
-              </div>
-            </div>
-          )}
 
           {/* Mobile Footer */}
           <div className="lg:hidden text-center mt-8 text-xs text-gray-400">

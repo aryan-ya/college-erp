@@ -10,6 +10,14 @@ export async function POST(req) {
 
     const { name, email, password, role } = body
 
+    // validation
+    if (!name || !email || !password || !role) {
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      )
+    }
+
     // check existing user
     const existingUser = await prisma.user.findUnique({
       where: { email }
@@ -25,29 +33,38 @@ export async function POST(req) {
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10)
 
+    // create user
     const user = await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
         role
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true
       }
     })
 
-    return NextResponse.json({
-      message: "User created",
-      user
-    })
+    return NextResponse.json(
+      {
+        message: "User created successfully",
+        user
+      },
+      { status: 201 }
+    )
 
   } catch (error) {
 
-    console.log(error)
+    console.error("REGISTER ERROR:", error)
 
     return NextResponse.json(
-      { error: "Server error" },
+      { error: "Internal server error" },
       { status: 500 }
     )
 
   }
-
 }
