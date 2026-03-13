@@ -1,4 +1,8 @@
+## 🚀 Live Demo
 
+Frontend: https://college-erp-79li.vercel.app/login
+
+GitHub Repository: https://github.com/aryan-ya/college-erp/
 
 # 🎓 College ERP System
 
