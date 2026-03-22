@@ -153,14 +153,6 @@ Key features of this page:
 
 This structure ensures proper **role-based workflow between Admin → Faculty → Student** within the ERP system.
 
- #@ 🚀 Live Demo
-
-Frontend: https://college-erp-79li.vercel.app/login
-
-GitHub Repository:
-https://github.com/yourusername/college-erp
-
-
 ## ⚙️ Run Project Locally
 
 Follow these steps to run the project on your local machine.
